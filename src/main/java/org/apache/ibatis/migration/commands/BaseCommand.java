@@ -262,7 +262,7 @@ public abstract class BaseCommand implements Command {
   private File getCustomDriverPath() {
     String customDriverPath = environment().getDriverPath();
     if (customDriverPath != null && customDriverPath.length() > 0) {
-      return new File(customDriverPath);
+      return new File(this.options.getPaths().getBasePath() + File.separator + customDriverPath);
     } else {
       return options.getPaths().getDriverPath();
     }
