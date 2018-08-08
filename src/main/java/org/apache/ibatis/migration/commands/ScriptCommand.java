@@ -84,7 +84,13 @@ public final class ScriptCommand extends BaseCommand {
           char[] cbuf = new char[1024];
           int l;
           while ((l = migrationReader.read(cbuf)) > -1) {
-            printStream.print(l == cbuf.length ? cbuf : Arrays.copyOf(cbuf, l));
+            String script = l == cbuf.length
+                    ? new String(cbuf)
+                    :  new String(Arrays.copyOf(cbuf, l)).trim();
+            if (!script.endsWith(";")) {
+              script += ";";
+            }
+            printStream.print(script);
           }
           printStream.println();
           printStream.println();
