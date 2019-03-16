@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.apache.ibatis.migration.hook;
 
+import org.apache.ibatis.jdbc.ScriptRunner;
+import org.apache.ibatis.migration.Change;
+import org.apache.ibatis.migration.ConnectionProvider;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import org.apache.ibatis.jdbc.ScriptRunner;
-import org.apache.ibatis.migration.Change;
-import org.apache.ibatis.migration.ConnectionProvider;
 
 public class HookContext {
   private ConnectionProvider connectionProvider;
@@ -38,24 +38,21 @@ public class HookContext {
 
   /**
    * @return A new {@link Connection} to the database. The returned connection must be closed.
-   * @throws SQLException
-   *           If a database access error occurs.
+   * @throws SQLException If a database access error occurs.
    */
   public Connection getConnection() throws SQLException {
     return connectionProvider.getConnection();
   }
 
   /**
-   * @param reader
-   *          Source of the SQL to execute.
+   * @param reader Source of the SQL to execute.
    */
   public void executeSql(Reader reader) {
     scriptRunner.runScript(reader);
   }
 
   /**
-   * @param sql
-   *          SQL to execute.
+   * @param sql SQL to execute.
    */
   public void executeSql(String sql) {
     executeSql(new StringReader(sql));
@@ -63,7 +60,7 @@ public class HookContext {
 
   /**
    * @return Returns an instance of {@link Change} object for an each hook; <code>null</code>
-   *         otherwise.
+   * otherwise.
    */
   public Change getChange() {
     return change;

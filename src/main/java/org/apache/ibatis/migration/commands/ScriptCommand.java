@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2018 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,19 +15,20 @@
  */
 package org.apache.ibatis.migration.commands;
 
+import org.apache.ibatis.migration.Change;
+import org.apache.ibatis.migration.MigrationException;
+import org.apache.ibatis.migration.operations.DatabaseOperation;
+import org.apache.ibatis.migration.operations.StatusOperation;
+import org.apache.ibatis.migration.options.SelectedOptions;
+
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.apache.ibatis.migration.Change;
-import org.apache.ibatis.migration.MigrationException;
-import org.apache.ibatis.migration.operations.DatabaseOperation;
-import org.apache.ibatis.migration.operations.StatusOperation;
-import org.apache.ibatis.migration.options.SelectedOptions;
 
 public final class ScriptCommand extends BaseCommand {
 
@@ -79,28 +80,30 @@ public final class ScriptCommand extends BaseCommand {
       }
       for (Change change : migrations) {
         if (shouldRun(change, v1, v2, scriptPending || scriptPendingUndo)) {
-          printStream.println("-- " + change.getFilename());
-          Reader migrationReader = getMigrationLoader().getScriptReader(change, undo);
-          char[] cbuf = new char[1024];
-          int l;
-          while ((l = migrationReader.read(cbuf)) > -1) {
-            String script = l == cbuf.length
-                    ? new String(cbuf)
-                    :  new String(Arrays.copyOf(cbuf, l)).trim();
-            if (!script.endsWith(";")) {
-              script += ";";
-            }
-            printStream.print(script);
-          }
-          printStream.println();
-          printStream.println();
-          printStream.println(undo ? generateVersionDelete(change) : generateVersionInsert(change));
-          printStream.println();
+          printChange(change, printStream, undo);
         }
       }
     } catch (IOException e) {
       throw new MigrationException("Error generating script. Cause: " + e, e);
     }
+  }
+
+  public void printChange(Change change, PrintStream printStream, boolean undo) throws IOException {
+    printStream.println("-- " + change.getFilename());
+    Reader migrationReader = getMigrationLoader().getScriptReader(change, undo);
+    char[] cbuf = new char[1024];
+    int l;
+    while ((l = migrationReader.read(cbuf)) > -1) {
+      String script = l == cbuf.length ? new String(cbuf) : new String(Arrays.copyOf(cbuf, l)).trim();
+      if (!script.endsWith(";")) {
+        script += ";";
+      }
+      printStream.println(script);
+    }
+    printStream.println();
+    printStream.println();
+    printStream.println(undo ? generateVersionDelete(change) : generateVersionInsert(change));
+    printStream.println();
   }
 
   private String generateVersionInsert(Change change) {

@@ -1,5 +1,5 @@
 --
---    Copyright 2010-2016 the original author or authors.
+--    Copyright 2010-2019 the original author or authors.
 --
 --    Licensed under the Apache License, Version 2.0 (the "License");
 --    you may not use this file except in compliance with the License.
@@ -25,15 +25,16 @@
 -- Be sure that ID and DESCRIPTION fields exist in
 -- BigInteger and String compatible fields respectively.
 
-CREATE TABLE ${changelog} (
-ID NUMERIC(20,0) NOT NULL,
-APPLIED_AT VARCHAR(25) NOT NULL,
-DESCRIPTION VARCHAR(255) NOT NULL
+CREATE TABLE ${changelog}
+(
+  ID          NUMERIC(20, 0) NOT NULL,
+  APPLIED_AT  VARCHAR(25)    NOT NULL,
+  DESCRIPTION VARCHAR(255)   NOT NULL
 );
 
 ALTER TABLE ${changelog}
-ADD CONSTRAINT PK_${changelog}
-PRIMARY KEY (id);
+  ADD CONSTRAINT PK_${changelog}
+    PRIMARY KEY (id);
 
 -- //@UNDO
 

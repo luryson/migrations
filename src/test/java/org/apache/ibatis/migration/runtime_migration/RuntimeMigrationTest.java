@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,20 +14,6 @@
  *    limitations under the License.
  */
 package org.apache.ibatis.migration.runtime_migration;
-
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.PrintStream;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Map;
-import java.util.Properties;
 
 import org.apache.ibatis.migration.ConnectionProvider;
 import org.apache.ibatis.migration.FileMigrationLoader;
@@ -45,6 +31,21 @@ import org.apache.ibatis.migration.utils.TestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.PrintStream;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class RuntimeMigrationTest {
 
@@ -180,7 +181,7 @@ public class RuntimeMigrationTest {
     runSql(connectionProvider, "drop table first_table");
     runSql(connectionProvider, "delete from changelog where id = 20130707120738");
 
-    new PendingOperation().operate(connectionProvider, migrationsLoader, dbOption, new PrintStream(out));
+    new PendingOperation(null).operate(connectionProvider, migrationsLoader, dbOption, new PrintStream(out));
     assertEquals("3", runQuery(connectionProvider, "select count(*) from changelog"));
     assertEquals("0", runQuery(connectionProvider, "select count(*) from first_table"));
   }

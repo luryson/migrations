@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2010-2018 the original author or authors.
+       Copyright 2010-2019 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -16,31 +16,32 @@
        limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd"
-  name="${project.name}">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/DECORATION/1.7.0"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd"
+         name="${project.name}">
 
-  <body>
+    <body>
 
-    <menu name="Migrations">
-      <item name="Introduction" href="index.html"/>
-      <item name="Installation" href="installation.html"/>
-      <item name="The 'migrate' Command" href="migrate.html">
-        <item name="init" href="init.html"/>
-        <item name="bootstrap" href="bootstrap.html"/>
-        <item name="new" href="new.html"/>
-        <item name="status" href="status.html"/>
-        <item name="up, down" href="updown.html"/>
-        <item name="version" href="version.html"/>
-        <item name="pending" href="pending.html"/>
-        <item name="script" href="script.html"/>
-        <item name="Command Shortcuts" href="shortcuts.html"/>
-        <item name="Custom MigrationLoader" href="custom-loader.html"/>
-      </item>
-      <item name="Migration Hooks" href="hooks.html"/>
-      <item name="Runtime Schema Migration" href="runtime-migration.html"/>
-    </menu>
+        <menu name="Migrations">
+            <item name="Introduction" href="index.html"/>
+            <item name="Installation" href="installation.html"/>
+            <item name="The 'migrate' Command" href="migrate.html">
+                <item name="init" href="init.html"/>
+                <item name="bootstrap" href="bootstrap.html"/>
+                <item name="new" href="new.html"/>
+                <item name="status" href="status.html"/>
+                <item name="up, down" href="updown.html"/>
+                <item name="version" href="version.html"/>
+                <item name="pending" href="pending.html"/>
+                <item name="script" href="script.html"/>
+                <item name="Command Shortcuts" href="shortcuts.html"/>
+                <item name="Custom MigrationLoader" href="custom-loader.html"/>
+            </item>
+            <item name="Migration Hooks" href="hooks.html"/>
+            <item name="Runtime Schema Migration" href="runtime-migration.html"/>
+        </menu>
 
-    <menu ref="reports"/>
-  </body>
+        <menu ref="reports"/>
+    </body>
 </project>

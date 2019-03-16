@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,17 +15,6 @@
  */
 package org.apache.ibatis.migration;
 
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Scanner;
-
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.SqlRunner;
 import org.apache.ibatis.migration.utils.TestUtil;
@@ -36,17 +25,28 @@ import org.junit.contrib.java.lang.system.Assertion;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Scanner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 public class MigratorTest {
 
+  private static File dir;
+  private static Properties env;
   @Rule
   public final ExpectedSystemExit exit = ExpectedSystemExit.none();
-
   @Rule
   public final SystemOutRule out = new SystemOutRule().enableLog();
-
-  private static File dir;
-
-  private static Properties env;
 
   @BeforeClass
   public static void setup() throws Exception {

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 package org.apache.ibatis.migration;
 
+import org.apache.ibatis.io.ResolverUtil;
+import org.apache.ibatis.io.ResolverUtil.Test;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.ibatis.io.ResolverUtil;
-import org.apache.ibatis.io.ResolverUtil.Test;
 
 public class JavaMigrationLoader implements MigrationLoader {
 

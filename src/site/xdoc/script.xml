@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2010-2016 the original author or authors.
+       Copyright 2010-2019 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -16,75 +16,100 @@
        limitations under the License.
 
 -->
-<document xmlns="http://maven.apache.org/XDOC/2.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/XDOC/2.0"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 
-  <properties>
-    <title>MyBatis Migrations | Migrate > script</title>
-    <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
-  </properties>
+    <properties>
+        <title>MyBatis Migrations | Migrate > script</title>
+        <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
+    </properties>
 
-  <body>
-    <section name="The 'script' command">
-      <p>While we developers wish we had unlimited access to every environment, the unfortunate truth is that we don’t.
-      Often it’s the very production environment that we’re targeting that we don’t have access to. Someone else, a DBA
-      or Change Management team will need to apply any changes. However, we don’t want this to be an excuse to not use a
-      good, automated change management tool.</p>
+    <body>
+        <section name="The 'script' command">
+            <p>While we developers wish we had unlimited access to every environment, the
+                unfortunate truth is that we don’t.
+                Often it’s the very production environment that we’re targeting that we don’t have
+                access to. Someone else, a DBA
+                or Change Management team will need to apply any changes. However, we don’t want
+                this to be an excuse to not use a
+                good, automated change management tool.
+            </p>
 
-      <p>MyBatis Migrations provides the <b>script</b> command to generate a script that can migrate a schema from one
-      version to another. As mentioned above, this will likely always be in an upward direction, but the script command
-      does also support generating undo scripts (just in case you’re so unfortunate that you don’t even have access to
-      central development databases!).</p>
+            <p>MyBatis Migrations provides the <b>script</b> command to generate a script that can
+                migrate a schema from one
+                version to another. As mentioned above, this will likely always be in an upward
+                direction, but the script command
+                does also support generating undo scripts (just in case you’re so unfortunate that
+                you don’t even have access to
+                central development databases!).
+            </p>
 
-      <p>The script command is quite simple. It takes two version numbers as parameters. Think of it as generating a
-      script to apply all of the identified versions in the order specified (the lower version is exclusive and the
-      higher version is inclusive).
-      For example, given the following:</p>
+            <p>The script command is quite simple. It takes two version numbers as parameters. Think
+                of it as generating a
+                script to apply all of the identified versions in the order specified (the lower
+                version is exclusive and the
+                higher version is inclusive).
+                For example, given the following:
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate status
-ID             Applied At          Description
-==================================================================
-20090802210445 2009-08-04 22:51:17 create changelog
-20090804225207 2009-08-04 22:51:17 create author table
-20090804225328 2009-08-05 24:55:23 create blog table
-20090804225333    ...pending...    create post table</source>
+            <source>/home/cbegin/testdb$ migrate status
+                ID Applied At Description
+                ==================================================================
+                20090802210445 2009-08-04 22:51:17 create changelog
+                20090804225207 2009-08-04 22:51:17 create author table
+                20090804225328 2009-08-05 24:55:23 create blog table
+                20090804225333 ...pending... create post table
+            </source>
 
-      <p>If we need to generate a “do” script to apply the last two versions above, we’d run the following command:</p>
+            <p>If we need to generate a “do” script to apply the last two versions above, we’d run
+                the following command:
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate script 20090804225207 20090804225333 > do.sql</source>
+            <source>/home/cbegin/testdb$ migrate script 20090804225207 20090804225333 > do.sql
+            </source>
 
-      <p>The script command outputs to stdout, so you can let it print to the console, or pipe it to a file or command.</p>
+            <p>The script command outputs to stdout, so you can let it print to the console, or pipe
+                it to a file or command.
+            </p>
 
-      <p>To generate the corresponding “undo” script, simply specify the version numbers in the opposite order:</p>
+            <p>To generate the corresponding “undo” script, simply specify the version numbers in
+                the opposite order:
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate script 20090804225333 20090804225207 > undo.sql</source>
+            <source>/home/cbegin/testdb$ migrate script 20090804225333 20090804225207 > undo.sql
+            </source>
 
-      <p>To generate a script which includes the first version, specify '0' as the lower version:</p>
+            <p>To generate a script which includes the first version, specify '0' as the lower
+                version:
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate script 0 20090804225207 > do.sql</source>
+            <source>/home/cbegin/testdb$ migrate script 0 20090804225207 > do.sql</source>
 
-      <source>/home/cbegin/testdb$ migrate script 20090804225207 0 > undo.sql</source>
+            <source>/home/cbegin/testdb$ migrate script 20090804225207 0 > undo.sql</source>
 
-      <p>Since version 3.2.1, two handy shortcut parameters <b>pending</b> and <b>pending_undo</b> were added.</p>
+            <p>Since version 3.2.1, two handy shortcut parameters <b>pending</b> and <b>
+                pending_undo
+            </b> were added.
+            </p>
 
-      <p>In the above example, only the last migration is pending, so the command below:</p>
+            <p>In the above example, only the last migration is pending, so the command below:</p>
 
-      <source>/home/cbegin/testdb$ migrate script pending</source>
+            <source>/home/cbegin/testdb$ migrate script pending</source>
 
-      <p>is equivalent to the following:</p>
+            <p>is equivalent to the following:</p>
 
-      <source>/home/cbegin/testdb$ migrate script 20090804225328 20090804225333</source>
+            <source>/home/cbegin/testdb$ migrate script 20090804225328 20090804225333</source>
 
-      <p>Similary, the command below:</p>
+            <p>Similary, the command below:</p>
 
-      <source>/home/cbegin/testdb$ migrate script pending_undo</source>
+            <source>/home/cbegin/testdb$ migrate script pending_undo</source>
 
-      <p>is equivalent to the following:</p>
+            <p>is equivalent to the following:</p>
 
-      <source>/home/cbegin/testdb$ migrate script 20090804225333 20090804225328</source>
+            <source>/home/cbegin/testdb$ migrate script 20090804225333 20090804225328</source>
 
-    </section>
-  </body>
+        </section>
+    </body>
 
 </document>

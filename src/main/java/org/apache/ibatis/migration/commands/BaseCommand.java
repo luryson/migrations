@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2018 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,29 +14,6 @@
  *    limitations under the License.
  */
 package org.apache.ibatis.migration.commands;
-
-import static org.apache.ibatis.migration.utils.Util.file;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
-import java.util.ServiceLoader;
-import java.util.TimeZone;
 
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
 import org.apache.ibatis.io.Resources;
@@ -59,18 +36,36 @@ import org.apache.ibatis.migration.options.SelectedPaths;
 import org.apache.ibatis.migration.utils.Util;
 import org.apache.ibatis.parsing.PropertyParser;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+import java.util.ServiceLoader;
+import java.util.TimeZone;
+
+import static org.apache.ibatis.migration.utils.Util.file;
+
 public abstract class BaseCommand implements Command {
   private static final String DATE_FORMAT = "yyyyMMddHHmmss";
-
-  private ClassLoader driverClassLoader;
-
-  private Environment environment;
-
-  protected PrintStream printStream = System.out;
-
   protected final SelectedOptions options;
-
   protected final SelectedPaths paths;
+  protected PrintStream printStream = System.out;
+  private ClassLoader driverClassLoader;
+  private Environment environment;
 
   protected BaseCommand(SelectedOptions selectedOptions) {
     this.options = selectedOptions;
@@ -85,8 +80,26 @@ public abstract class BaseCommand implements Command {
     }
   }
 
-  public void setDriverClassLoader(ClassLoader aDriverClassLoader) {
-    driverClassLoader = aDriverClassLoader;
+  protected static void copyTemplate(File templateFile, File toFile, Properties variables) throws IOException {
+    copyTemplate(new FileReader(templateFile), toFile, variables);
+  }
+
+  protected static void copyTemplate(Reader templateReader, File toFile, Properties variables) throws IOException {
+    LineNumberReader reader = new LineNumberReader(templateReader);
+    try {
+      PrintWriter writer = new PrintWriter(new FileWriter(toFile));
+      try {
+        String line;
+        while ((line = reader.readLine()) != null) {
+          line = PropertyParser.parse(line, variables);
+          writer.println(line);
+        }
+      } finally {
+        writer.close();
+      }
+    } finally {
+      reader.close();
+    }
   }
 
   public void setPrintStream(PrintStream aPrintStream) {
@@ -170,28 +183,6 @@ public abstract class BaseCommand implements Command {
     }
   }
 
-  protected static void copyTemplate(File templateFile, File toFile, Properties variables) throws IOException {
-    copyTemplate(new FileReader(templateFile), toFile, variables);
-  }
-
-  protected static void copyTemplate(Reader templateReader, File toFile, Properties variables) throws IOException {
-    LineNumberReader reader = new LineNumberReader(templateReader);
-    try {
-      PrintWriter writer = new PrintWriter(new FileWriter(toFile));
-      try {
-        String line;
-        while ((line = reader.readLine()) != null) {
-          line = PropertyParser.parse(line, variables);
-          writer.println(line);
-        }
-      } finally {
-        writer.close();
-      }
-    } finally {
-      reader.close();
-    }
-  }
-
   protected File environmentFile() {
     return file(paths.getEnvPath(), options.getEnvironment() + ".properties");
   }
@@ -259,6 +250,10 @@ public abstract class BaseCommand implements Command {
     return null;
   }
 
+  public void setDriverClassLoader(ClassLoader aDriverClassLoader) {
+    driverClassLoader = aDriverClassLoader;
+  }
+
   private File getCustomDriverPath() {
     String customDriverPath = environment().getDriverPath();
     if (customDriverPath != null && customDriverPath.length() > 0) {
@@ -320,6 +315,7 @@ public abstract class BaseCommand implements Command {
     option.setSendFullScript(environment().isSendFullScript());
     option.setRemoveCRs(environment().isRemoveCrs());
     option.setDelimiter(environment().getDelimiter());
+    option.setPretend(options.isPretend());
     return option;
   }
 }

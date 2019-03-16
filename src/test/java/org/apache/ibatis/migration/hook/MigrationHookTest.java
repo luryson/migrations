@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,14 +15,6 @@
  */
 package org.apache.ibatis.migration.hook;
 
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.SqlRunner;
 import org.apache.ibatis.migration.Migrator;
@@ -33,6 +25,15 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.Assertion;
 import org.junit.contrib.java.lang.system.ExpectedSystemExit;
 import org.junit.contrib.java.lang.system.SystemOutRule;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MigrationHookTest {
 

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,6 +14,10 @@
  *    limitations under the License.
  */
 package org.apache.ibatis.migration.hook;
+
+import org.apache.ibatis.migration.MigrationException;
+import org.apache.ibatis.migration.options.SelectedPaths;
+import org.apache.ibatis.migration.utils.Util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,10 +38,6 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import org.apache.ibatis.migration.MigrationException;
-import org.apache.ibatis.migration.options.SelectedPaths;
-import org.apache.ibatis.migration.utils.Util;
 
 public class Jsr223HookScript implements HookScript {
 

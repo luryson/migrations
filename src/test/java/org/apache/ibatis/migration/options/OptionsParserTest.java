@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,7 +20,16 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static org.apache.ibatis.migration.options.Options.*;
+import static org.apache.ibatis.migration.options.Options.DRIVERPATH;
+import static org.apache.ibatis.migration.options.Options.ENV;
+import static org.apache.ibatis.migration.options.Options.ENVPATH;
+import static org.apache.ibatis.migration.options.Options.FORCE;
+import static org.apache.ibatis.migration.options.Options.HELP;
+import static org.apache.ibatis.migration.options.Options.HOOKPATH;
+import static org.apache.ibatis.migration.options.Options.PATH;
+import static org.apache.ibatis.migration.options.Options.SCRIPTPATH;
+import static org.apache.ibatis.migration.options.Options.TEMPLATE;
+import static org.apache.ibatis.migration.options.Options.TRACE;
 import static org.apache.ibatis.migration.options.OptionsParser.parse;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;

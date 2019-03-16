@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -30,31 +30,6 @@ import java.util.Set;
 public class Environment {
 
   public static final String CHANGELOG = "changelog";
-
-  private enum SETTING_KEY {
-    time_zone,
-    delimiter,
-    script_char_set,
-    full_line_delimiter,
-    send_full_script,
-    auto_commit,
-    remove_crs,
-    ignore_warnings,
-    driver_path,
-    driver,
-    url,
-    username,
-    password,
-    hook_before_up,
-    hook_before_each_up,
-    hook_after_each_up,
-    hook_after_up,
-    hook_before_down,
-    hook_before_each_down,
-    hook_after_each_down,
-    hook_after_down
-  }
-
   private static final List<String> SETTING_KEYS;
 
   static {
@@ -79,7 +54,6 @@ public class Environment {
   private final String url;
   private final String username;
   private final String password;
-
   private final String hookBeforeUp;
   private final String hookBeforeEachUp;
   private final String hookAfterEachUp;
@@ -88,7 +62,6 @@ public class Environment {
   private final String hookBeforeEachDown;
   private final String hookAfterEachDown;
   private final String hookAfterDown;
-
   private final Properties variables = new Properties();
 
   public Environment(File file) {
@@ -231,5 +204,29 @@ public class Environment {
 
   public Properties getVariables() {
     return variables;
+  }
+
+  private enum SETTING_KEY {
+    time_zone,
+    delimiter,
+    script_char_set,
+    full_line_delimiter,
+    send_full_script,
+    auto_commit,
+    remove_crs,
+    ignore_warnings,
+    driver_path,
+    driver,
+    url,
+    username,
+    password,
+    hook_before_up,
+    hook_before_each_up,
+    hook_after_each_up,
+    hook_after_up,
+    hook_before_down,
+    hook_before_each_down,
+    hook_after_each_down,
+    hook_after_down
   }
 }

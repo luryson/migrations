@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +15,18 @@
  */
 package org.apache.ibatis.migration.operations;
 
+import org.apache.ibatis.jdbc.ScriptRunner;
+import org.apache.ibatis.migration.Change;
+import org.apache.ibatis.migration.ConnectionProvider;
+import org.apache.ibatis.migration.MigrationException;
+import org.apache.ibatis.migration.MigrationLoader;
+import org.apache.ibatis.migration.commands.ScriptCommand;
+import org.apache.ibatis.migration.hook.HookContext;
+import org.apache.ibatis.migration.hook.MigrationHook;
+import org.apache.ibatis.migration.options.DatabaseOperationOption;
+import org.apache.ibatis.migration.options.SelectedOptions;
+import org.apache.ibatis.migration.utils.Util;
+
 import java.io.PrintStream;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -23,17 +35,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.jdbc.ScriptRunner;
-import org.apache.ibatis.migration.Change;
-import org.apache.ibatis.migration.ConnectionProvider;
-import org.apache.ibatis.migration.MigrationException;
-import org.apache.ibatis.migration.MigrationLoader;
-import org.apache.ibatis.migration.hook.HookContext;
-import org.apache.ibatis.migration.hook.MigrationHook;
-import org.apache.ibatis.migration.options.DatabaseOperationOption;
-import org.apache.ibatis.migration.utils.Util;
-
 public final class PendingOperation extends DatabaseOperation {
+
+  private SelectedOptions selectedOptions;
+
+  public PendingOperation(SelectedOptions selectedOptions) {
+    this.selectedOptions = selectedOptions;
+  }
 
   public PendingOperation operate(ConnectionProvider connectionProvider, MigrationLoader migrationsLoader,
       DatabaseOperationOption option, PrintStream printStream) {
@@ -56,7 +64,12 @@ public final class PendingOperation extends DatabaseOperation {
       ScriptRunner runner = getScriptRunner(connectionProvider, option, printStream);
       Reader scriptReader = null;
       try {
+        ScriptCommand scriptCommand = new ScriptCommand(selectedOptions);
         for (Change change : pending) {
+          if (option.isPretend()) {
+            scriptCommand.printChange(change, printStream, false);
+            continue;
+          }
           if (stepCount == 0 && hook != null) {
             hookBindings.put(MigrationHook.HOOK_CONTEXT, new HookContext(connectionProvider, runner, null));
             hook.before(hookBindings);

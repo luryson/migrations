@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2018 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,18 +15,17 @@
  */
 package org.apache.ibatis.migration;
 
-import static org.apache.ibatis.migration.commands.Commands.resolveCommand;
-import static org.apache.ibatis.migration.options.OptionsParser.parse;
+import org.apache.ibatis.migration.commands.Command;
+import org.apache.ibatis.migration.options.Options;
+import org.apache.ibatis.migration.options.SelectedOptions;
+import org.apache.ibatis.migration.utils.Util;
 
 import java.io.File;
 import java.io.PrintStream;
 import java.util.Date;
 
-import org.apache.ibatis.migration.commands.Command;
-import org.apache.ibatis.migration.options.Options;
-import org.apache.ibatis.migration.options.SelectedOptions;
-import org.apache.ibatis.migration.utils.Util;
-import org.apache.ibatis.migration.ConsoleColors;
+import static org.apache.ibatis.migration.commands.Commands.resolveCommand;
+import static org.apache.ibatis.migration.options.OptionsParser.parse;
 
 public class CommandLine {
   private final PrintStream console = System.out;

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2018 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.apache.ibatis.migration;
 
+import org.apache.ibatis.parsing.PropertyParser;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilterReader;
@@ -25,53 +27,21 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
-import org.apache.ibatis.parsing.PropertyParser;
-
 public class MigrationReader extends FilterReader {
 
-  private final String lineSeparator = System.getProperty("line.separator", "\n");
-
   private static final String UNDO_TAG = "@UNDO";
-
-  private boolean undo;
-
-  private Properties variables;
-
-  private Part part = Part.NEW_LINE;
-
-  private VariableStatus variableStatus = VariableStatus.NOTHING;
-
-  private char previousChar;
-
-  private int undoIndex = 0;
-
-  private int afterCommentPrefixIndex;
-
-  private int afterDoubleSlashIndex;
-
-  private boolean inUndo;
-
+  private final String lineSeparator = System.getProperty("line.separator", "\n");
   private final StringBuilder buffer = new StringBuilder();
-
   private final StringBuilder lineBuffer = new StringBuilder();
-
-  private enum Part {
-    NOT_UNDO_LINE,
-    NEW_LINE,
-    COMMENT_PREFIX,
-    AFTER_COMMENT_PREFIX,
-    DOUBLE_SLASH,
-    AFTER_DOUBLE_SLASH,
-    UNDO_TAG,
-    AFTER_UNDO_TAG
-  }
-
-  private enum VariableStatus {
-    NOTHING,
-    FOUND_DOLLAR,
-    FOUND_OPEN_BRACE,
-    FOUND_POSSIBLE_VARIABLE
-  }
+  private boolean undo;
+  private Properties variables;
+  private Part part = Part.NEW_LINE;
+  private VariableStatus variableStatus = VariableStatus.NOTHING;
+  private char previousChar;
+  private int undoIndex = 0;
+  private int afterCommentPrefixIndex;
+  private int afterDoubleSlashIndex;
+  private boolean inUndo;
 
   public MigrationReader(File file, String charset, boolean undo, Properties variables) throws IOException {
     this(new FileInputStream(file), charset, undo, variables);
@@ -82,6 +52,15 @@ public class MigrationReader extends FilterReader {
     super(scriptFileReader(inputStream, charset));
     this.undo = undo;
     this.variables = variables;
+  }
+
+  protected static Reader scriptFileReader(InputStream inputStream, String charset)
+      throws UnsupportedEncodingException {
+    if (charset == null || charset.length() == 0) {
+      return new InputStreamReader(inputStream);
+    } else {
+      return new InputStreamReader(inputStream, charset);
+    }
   }
 
   @Override
@@ -264,12 +243,21 @@ public class MigrationReader extends FilterReader {
     return result == -1 ? -1 : (int) buf[0];
   }
 
-  protected static Reader scriptFileReader(InputStream inputStream, String charset)
-      throws UnsupportedEncodingException {
-    if (charset == null || charset.length() == 0) {
-      return new InputStreamReader(inputStream);
-    } else {
-      return new InputStreamReader(inputStream, charset);
-    }
+  private enum Part {
+    NOT_UNDO_LINE,
+    NEW_LINE,
+    COMMENT_PREFIX,
+    AFTER_COMMENT_PREFIX,
+    DOUBLE_SLASH,
+    AFTER_DOUBLE_SLASH,
+    UNDO_TAG,
+    AFTER_UNDO_TAG
+  }
+
+  private enum VariableStatus {
+    NOTHING,
+    FOUND_DOLLAR,
+    FOUND_OPEN_BRACE,
+    FOUND_POSSIBLE_VARIABLE
   }
 }

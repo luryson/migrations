@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2010-2017 the original author or authors.
+       Copyright 2010-2019 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -16,55 +16,79 @@
        limitations under the License.
 
 -->
-<document xmlns="http://maven.apache.org/XDOC/2.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/XDOC/2.0"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 
-  <properties>
-    <title>MyBatis Migrations | Migrate > Init</title>
-    <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
-  </properties>
+    <properties>
+        <title>MyBatis Migrations | Migrate > Init</title>
+        <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
+    </properties>
 
-  <body>
-    <section name="The 'init' command">
-      <p>The <strong>init</strong> command initializes a new 'migration path', also called a 'repository' (of migration scripts). Regardless of whether your working with a new database or an existing one, you'll run init to create the workspace in which you'll place everything you need to manage database
-change. Running this command will create the directory specified by the <code>--path</code> option (which is the current working directory by default).
-Here's an example of running the init command:</p>
+    <body>
+        <section name="The 'init' command">
+            <p>The <strong>init</strong> command initializes a new 'migration path', also called a
+                'repository' (of migration scripts). Regardless of whether your working with a new
+                database or an existing one, you'll run init to create the workspace in which you'll
+                place everything you need to manage database
+                change. Running this command will create the directory specified by the <code>
+                    --path
+                </code> option (which is the current working directory by default).
+                Here's an example of running the init command:
+            </p>
 
-      <source>/$ migrate --path=/home/cbegin/testdb init</source>
+            <source>/$ migrate --path=/home/cbegin/testdb init</source>
 
-      <p>If I was already in the <code>/home/cbegin/testdb</code> directory, I could simply run:</p>
+            <p>If I was already in the <code>/home/cbegin/testdb</code> directory, I could simply
+                run:
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate init</source>
+            <source>/home/cbegin/testdb$ migrate init</source>
 
-      <p>When the command is completed, the directory will contain the following sub-directories:</p>
+            <p>When the command is completed, the directory will contain the following
+                sub-directories:
+            </p>
 
-      <p>Since version 3.2.1, you can change the default timestamp based file prefix to number sequence by specifying <code>--idpattern</code> option. With the following command, for example, the prefix of the generated scripts will be three digit zero-padded number like '001'.</p>
+            <p>Since version 3.2.1, you can change the default timestamp based file prefix to number
+                sequence by specifying <code>--idpattern</code> option. With the following command,
+                for example, the prefix of the generated scripts will be three digit zero-padded
+                number like '001'.
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate --idpattern=000 init</source>
+            <source>/home/cbegin/testdb$ migrate --idpattern=000 init</source>
 
-      <p>Instead of specifying the pattern as a command line argument, you can set it in the configuration file <code>$MIGRATIONS_HOME/migration.properties</code> as follows.</p>
+            <p>Instead of specifying the pattern as a command line argument, you can set it in the
+                configuration file <code>$MIGRATIONS_HOME/migration.properties</code> as follows.
+            </p>
 
-      <source># Example of migration.properties
-idpattern=000</source>
+            <source># Example of migration.properties
+                idpattern=000
+            </source>
 
-      <subsection name="./drivers">
-        <p>Place your JDBC driver .jar or .zip files in this directory. Upon running a migration, the drivers will be dynamically loaded.</p>
-      </subsection>
+            <subsection name="./drivers">
+                <p>Place your JDBC driver .jar or .zip files in this directory. Upon running a
+                    migration, the drivers will be dynamically loaded.
+                </p>
+            </subsection>
 
-      <subsection name="./environments">
-        <p>
-  In the environments folder you will find .properties files that represent your database instances. By default a
-  <strong>development.properties</strong>
-  file is created for you to configure your development time database properties. You can also create test.properties
-  and production.properties files. Details about the properties themselves follow later in this document. The
-  environment can be specified when running a migration by using the
-  <code>--env=&lt;environment&gt;</code>
-  option (without the path or ".properties" part).
-</p>
-  <p>The default environment is "development". The properties file is self documented, but here it is for reference:</p>
+            <subsection name="./environments">
+                <p>
+                    In the environments folder you will find .properties files that represent your
+                    database instances. By default a
+                    <strong>development.properties</strong>
+                    file is created for you to configure your development time database properties.
+                    You can also create test.properties
+                    and production.properties files. Details about the properties themselves follow
+                    later in this document. The
+                    environment can be specified when running a migration by using the
+                    <code>--env=&lt;environment&gt;</code>
+                    option (without the path or ".properties" part).
+                </p>
+                <p>The default environment is "development". The properties file is self documented,
+                    but here it is for reference:
+                </p>
 
-        <source><![CDATA[## Base time zone to ensure times are consistent across machines
+                <source><![CDATA[## Base time zone to ensure times are consistent across machines
 time_zone=GMT+0:00
 ## The character set that scripts are encoded with
 # script_char_set=UTF-8
@@ -96,28 +120,35 @@ send_full_script=true
 ignore_warnings=true
 # Custom driver path to avoid copying your drivers
 # driver_path=]]></source>
-        <h4>Database specific information</h4>
-        <h5>MySQL</h5>
-        <ul>
-          <li><code>send_full_script</code> must be set to <code>false</code> to execute a script with multiple statements.</li>
-        </ul>
-      </subsection>
+                <h4>Database specific information</h4>
+                <h5>MySQL</h5>
+                <ul>
+                    <li>
+                        <code>send_full_script</code>
+                        must be set to <code>false</code> to execute a script with multiple
+                        statements.
+                    </li>
+                </ul>
+            </subsection>
 
-      <subsection name="./scripts">
-        <p>
-  This directory contains your migration SQL files. These are the files that contain your DDL to both upgrade and
-  downgrade your database structure. By default, the directory will contain the script to create the
-  <strong>changelog</strong>
-  table, plus one empty example migration script. To create a new migration script, use the
-  <strong>"new"</strong>
-  command. To run all pending migrations, use the
-  <strong>"up"</strong>
-  command. To undo the last migration applied, use the
-  <strong>"down"</strong>
-  command etc.
-</p>
-      </subsection>
-    </section>
-  </body>
+            <subsection name="./scripts">
+                <p>
+                    This directory contains your migration SQL files. These are the files that
+                    contain your DDL to both upgrade and
+                    downgrade your database structure. By default, the directory will contain the
+                    script to create the
+                    <strong>changelog</strong>
+                    table, plus one empty example migration script. To create a new migration
+                    script, use the
+                    <strong>"new"</strong>
+                    command. To run all pending migrations, use the
+                    <strong>"up"</strong>
+                    command. To undo the last migration applied, use the
+                    <strong>"down"</strong>
+                    command etc.
+                </p>
+            </subsection>
+        </section>
+    </body>
 
 </document>

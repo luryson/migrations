@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,8 +15,10 @@
  */
 package org.apache.ibatis.migration.commands;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import org.apache.ibatis.io.Resources;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,10 +27,8 @@ import java.io.PrintWriter;
 import java.util.Properties;
 import java.util.Scanner;
 
-import org.apache.ibatis.io.Resources;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertTrue;
 
 public class BaseCommandTest {
   @Rule

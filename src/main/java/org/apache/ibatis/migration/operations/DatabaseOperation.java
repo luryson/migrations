@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2017 the original author or authors.
+ *    Copyright 2010-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +15,13 @@
  */
 package org.apache.ibatis.migration.operations;
 
+import org.apache.ibatis.jdbc.ScriptRunner;
+import org.apache.ibatis.jdbc.SqlRunner;
+import org.apache.ibatis.migration.Change;
+import org.apache.ibatis.migration.ConnectionProvider;
+import org.apache.ibatis.migration.MigrationException;
+import org.apache.ibatis.migration.options.DatabaseOperationOption;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -24,14 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.jdbc.ScriptRunner;
-import org.apache.ibatis.jdbc.SqlRunner;
-import org.apache.ibatis.migration.Change;
-import org.apache.ibatis.migration.ConnectionProvider;
-import org.apache.ibatis.migration.MigrationException;
-import org.apache.ibatis.migration.options.DatabaseOperationOption;
-
 public abstract class DatabaseOperation {
+
+  public static String generateAppliedTimeStampAsString() {
+    return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.sql.Date(System.currentTimeMillis()));
+  }
 
   protected void insertChangelog(Change change, ConnectionProvider connectionProvider, DatabaseOperationOption option) {
     SqlRunner runner = getSqlRunner(connectionProvider);
@@ -101,7 +105,7 @@ public abstract class DatabaseOperation {
       scriptRunner.setStopOnError(option.isStopOnError());
       scriptRunner.setThrowWarning(option.isThrowWarning());
       scriptRunner.setEscapeProcessing(false);
-      scriptRunner.setAutoCommit(option.isAutoCommit());
+      scriptRunner.setAutoCommit(!option.isPretend() && option.isAutoCommit());
       scriptRunner.setDelimiter(option.getDelimiter());
       scriptRunner.setFullLineDelimiter(option.isFullLineDelimiter());
       scriptRunner.setSendFullScript(option.isSendFullScript());
@@ -110,10 +114,6 @@ public abstract class DatabaseOperation {
     } catch (Exception e) {
       throw new MigrationException("Error creating ScriptRunner.  Cause: " + e, e);
     }
-  }
-
-  public static String generateAppliedTimeStampAsString() {
-    return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.sql.Date(System.currentTimeMillis()));
   }
 
   protected void println(PrintStream printStream) {

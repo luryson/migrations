@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2010-2017 the original author or authors.
+       Copyright 2010-2019 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -16,103 +16,149 @@
        limitations under the License.
 
 -->
-<document xmlns="http://maven.apache.org/XDOC/2.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/XDOC/2.0"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 
-  <properties>
-    <title>MyBatis Migrations | Migrate > new</title>
-    <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
-  </properties>
+    <properties>
+        <title>MyBatis Migrations | Migrate > new</title>
+        <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
+    </properties>
 
-  <body>
-    <section name="The 'new' command">
-      <p>Now that you’ve initialized your repository and bootstrapped your existing database schema, you’re ready to
-      start leveraging the power of MyBatis Migrations!</p>
+    <body>
+        <section name="The 'new' command">
+            <p>Now that you’ve initialized your repository and bootstrapped your existing database
+                schema, you’re ready to
+                start leveraging the power of MyBatis Migrations!
+            </p>
 
-      <p>MyBatis Migrations are simple SQL script files (*.sql) that live in the <code>scripts</code> directory and
-      follow a very strict convention. Since this convention is so important, we don’t want to leave it up to humans to
-      try to get it right every time... so we let automation do what it does best, and keep things consistent.</p>
+            <p>MyBatis Migrations are simple SQL script files (*.sql) that live in the <code>
+                scripts
+            </code> directory and
+                follow a very strict convention. Since this convention is so important, we don’t
+                want to leave it up to humans to
+                try to get it right every time... so we let automation do what it does best, and
+                keep things consistent.
+            </p>
 
-      <p>The <code>new</code> command generates the skeleton of a migration script that you can then simply fill in.
-      The command is simply run as follows:</p>
+            <p>The <code>new</code> command generates the skeleton of a migration script that you
+                can then simply fill in.
+                The command is simply run as follows:
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate new "create blog table"</source>
+            <source>/home/cbegin/testdb$ migrate new "create blog table"</source>
 
-      <p>The parameter that the new command takes is a comment describing the migration that you're
-        creating. You don’t need quotes around it, but it helps keep the command readable.</p>
+            <p>The parameter that the new command takes is a comment describing the migration that
+                you're
+                creating. You don’t need quotes around it, but it helps keep the command readable.
+            </p>
 
-      <p>When the command is run, it will create a file named something like the following:</p>
+            <p>When the command is run, it will create a file named something like the following:
+            </p>
 
-      <source>20090807221754_create_blog_table.sql</source>
+            <source>20090807221754_create_blog_table.sql</source>
 
-      <p>This format is very important (which is why it’s generated). The number at the beginning plays three roles.
-      First, it’s a <i>practically unique</i> identifier, meaning it’s highly unlikely that two people will generate the
-      same one at the same time (it’s not a big deal to resolve if it does happen). Second, it’s a timestamp, indicating
-      when the migration was created. Third, it is an ordinal index, formatted in a way that will keep the migrations
-      sorted in the order in which they were created. The remainder of the filename is the comment you specified in the
-      parameter. Finally, the suffix is .sql, indicating the file type that most editors will recognize.</p>
+            <p>This format is very important (which is why it’s generated). The number at the
+                beginning plays three roles.
+                First, it’s a <i>practically unique</i> identifier, meaning it’s highly unlikely
+                that two people will generate the
+                same one at the same time (it’s not a big deal to resolve if it does happen).
+                Second, it’s a timestamp, indicating
+                when the migration was created. Third, it is an ordinal index, formatted in a way
+                that will keep the migrations
+                sorted in the order in which they were created. The remainder of the filename is the
+                comment you specified in the
+                parameter. Finally, the suffix is .sql, indicating the file type that most editors
+                will recognize.
+            </p>
 
-      <p>Since version 3.2.1, you can change the default timestamp-based file prefix to number sequence by specifying <code>--idpattern</code> option. Assuming that the prefix of the latest existing script is '002', with the following command:</p>
+            <p>Since version 3.2.1, you can change the default timestamp-based file prefix to number
+                sequence by specifying <code>--idpattern</code> option. Assuming that the prefix of
+                the latest existing script is '002', with the following command:
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate --idpattern=000 new "create blog table"</source>
+            <source>/home/cbegin/testdb$ migrate --idpattern=000 new "create blog table"</source>
 
-      <p>the name of the generated file will be:</p>
+            <p>the name of the generated file will be:</p>
 
-      <source>003_create_blog_table.sql</source>
+            <source>003_create_blog_table.sql</source>
 
-      <p>Instead of specifying the pattern as a command line argument, you can set it in the configuration file <code>$MIGRATIONS_HOME/migration.properties</code> as follows.</p>
+            <p>Instead of specifying the pattern as a command line argument, you can set it in the
+                configuration file <code>$MIGRATIONS_HOME/migration.properties</code> as follows.
+            </p>
 
-      <source># Example of migration.properties
-idpattern=000</source>
+            <source># Example of migration.properties
+                idpattern=000
+            </source>
 
-      <p>The contents of the migration script also follows a specific and required pattern.
-      Here's the contents of the file we just generated:</p>
+            <p>The contents of the migration script also follows a specific and required pattern.
+                Here's the contents of the file we just generated:
+            </p>
 
-      <source>-- // create blog table
--- Migration SQL that makes the change goes here.
+            <source>-- // create blog table
+                -- Migration SQL that makes the change goes here.
 
--- //@UNDO
--- SQL to undo the change goes here.</source>
+                -- //@UNDO
+                -- SQL to undo the change goes here.
+            </source>
 
-      <p>Notice that your comment once again appears at the top of the file.
-      You can add more comments beneath it and throughout the script if you like.</p>
+            <p>Notice that your comment once again appears at the top of the file.
+                You can add more comments beneath it and throughout the script if you like.
+            </p>
 
-      <p>The section immediately following that comment is where you would put your DDL commands to create the blog table.</p>
+            <p>The section immediately following that comment is where you would put your DDL
+                commands to create the blog table.
+            </p>
 
-      <p>Then notice the <source>-- //@UNDO</source> section. This section demarcates the script file sections, splitting
-      it into two distinct parts. Only the commands above the undo section will be executed when <i>upgrading</i> a database.
-      Everything beneath the undo section will be run when <i>downgrading</i> the database. Both sections are kept in
-      the same file for simplicity and clarity. The following is a filled in script:</p>
+            <p>Then notice the <source>-- //@UNDO</source> section. This section demarcates the
+                script file sections, splitting
+                it into two distinct parts. Only the commands above the undo section will be
+                executed when <i>upgrading</i> a database.
+                Everything beneath the undo section will be run when <i>downgrading</i> the
+                database. Both sections are kept in
+                the same file for simplicity and clarity. The following is a filled in script:
+            </p>
 
-      <source>-- // create blog table
-CREATE TABLE BLOG (
-  ID INT,
-  NAME VARCHAR(255),
-  PRIMARY KEY(ID)
-);
+            <source>-- // create blog table
+                CREATE TABLE BLOG (
+                ID INT,
+                NAME VARCHAR(255),
+                PRIMARY KEY(ID)
+                );
 
--- //@UNDO
-DROP TABLE BLOG;</source>
+                -- //@UNDO
+                DROP TABLE BLOG;
+            </source>
 
-      <p>Notice that the commands are <b>terminated by a colon</b>. This is also important, and you will receive a
-      warning and likely a failure if you don't terminate the SQL statements with a colon.</p>
+            <p>Notice that the commands are <b>terminated by a colon</b>. This is also important,
+                and you will receive a
+                warning and likely a failure if you don't terminate the SQL statements with a colon.
+            </p>
 
-      <p>Optionally, you can configure your own template to be consumed by the 'new' command. Configuration requires a
-      file named migration.properties (in <code>$MIGRATIONS_HOME</code>). This file will contain the location of your template.</p>
+            <p>Optionally, you can configure your own template to be consumed by the 'new' command.
+                Configuration requires a
+                file named migration.properties (in <code>$MIGRATIONS_HOME</code>). This file will
+                contain the location of your template.
+            </p>
 
-      <source># Example of migration.properties
+            <source># Example of migration.properties
 
-new_command.template=templates/new_template_migration.sql</source>
+                new_command.template=templates/new_template_migration.sql
+            </source>
 
-      <p>Alternatively you can manually specify the location of your template as such:</p>
+            <p>Alternatively you can manually specify the location of your template as such:</p>
 
-      <source><![CDATA[migrate new --template=<path to template> "your description"]]></source>
+            <source>
+                <![CDATA[migrate new --template=<path to template> "your description"]]></source>
 
-      <p>If neither of these are used, or valid, the default template shown on the previous page will be used.</p>
+            <p>If neither of these are used, or valid, the default template shown on the previous
+                page will be used.
+            </p>
 
-      <p>So how do we run this script? Well, first it’s probably important to understand the current state of the database.</p>
-    </section>
-  </body>
+            <p>So how do we run this script? Well, first it’s probably important to understand the
+                current state of the database.
+            </p>
+        </section>
+    </body>
 
 </document>

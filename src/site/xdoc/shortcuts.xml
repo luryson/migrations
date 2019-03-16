@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-       Copyright 2010-2016 the original author or authors.
+       Copyright 2010-2019 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
        you may not use this file except in compliance with the License.
@@ -16,30 +16,36 @@
        limitations under the License.
 
 -->
-<document xmlns="http://maven.apache.org/XDOC/2.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+<document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/XDOC/2.0"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
 
-  <properties>
-    <title>MyBatis Migrations | Migrate > shortcuts</title>
-    <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
-  </properties>
+    <properties>
+        <title>MyBatis Migrations | Migrate > shortcuts</title>
+        <author email="mybatis-dev@googlegroups.com">The MyBatis Team</author>
+    </properties>
 
-  <body>
-    <section name="Command Shortcuts">
-      <p>Any of the commands can be executed with only the first few (unambiguous) characters of their name.</p>
+    <body>
+        <section name="Command Shortcuts">
+            <p>Any of the commands can be executed with only the first few (unambiguous) characters
+                of their name.
+            </p>
 
-      <p>For example, the <code>status</code> command can be shortened to:</p>
+            <p>For example, the <code>status</code> command can be shortened to:
+            </p>
 
-      <source>/home/cbegin/testdb$ migrate sta</source>
+            <source>/home/cbegin/testdb$ migrate sta</source>
 
-      <p>Or even just:</p>
+            <p>Or even just:</p>
 
-      <source>/home/cbegin/testdb$ migrate st</source>
+            <source>/home/cbegin/testdb$ migrate st</source>
 
-      <p>If you script migrations using unix shell scripts or Windows batch files, be sure to always use the full name
-      for safety. That way, if the shortcut becomes ambiguous in the future, your script will still function.</p>
-    </section>
-  </body>
+            <p>If you script migrations using unix shell scripts or Windows batch files, be sure to
+                always use the full name
+                for safety. That way, if the shortcut becomes ambiguous in the future, your script
+                will still function.
+            </p>
+        </section>
+    </body>
 
 </document>
